@@ -3,6 +3,7 @@ import { fetchClient } from '../lib/api';
 import Cookies from 'js-cookie';
 
 interface User {
+    id?: string;
     username: string;
     email: string;
 }
@@ -22,6 +23,20 @@ const initialState: AuthState = {
     loading: false,
     error: null,
 };
+
+function parseJwt(token: string) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        return null;
+    }
+}
 
 export const loginUser = createAsyncThunk(
     'auth/login',
@@ -75,7 +90,18 @@ export const fetchUserProfile = createAsyncThunk(
             if (!response.ok) {
                 return rejectWithValue('Failed to fetch user profile');
             }
-            return await response.json();
+            const user = await response.json();
+
+            // Extract ID from token if available
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                const decoded = parseJwt(token);
+                if (decoded && decoded.sub) {
+                    user.id = decoded.sub;
+                }
+            }
+
+            return user;
         } catch (error: any) {
             return rejectWithValue(error.message);
         }

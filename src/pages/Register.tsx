@@ -67,7 +67,7 @@ export default function Register() {
                                     <FormItem>
                                         <FormLabel>Username</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="johndoe" {...field} />
+                                            <Input placeholder="pavlo.demjanov" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
