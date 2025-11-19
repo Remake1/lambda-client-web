@@ -1,5 +1,5 @@
 import {Outlet} from "react-router";
-import NavbarFull from "../components/navbar-full.tsx";
+import NavbarFull from "../components/NavbarFull.tsx";
 
 export default function BaseLayout() {
     return (

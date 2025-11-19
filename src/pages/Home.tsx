@@ -1,4 +1,4 @@
-import Landing from "@/components/landing.tsx";
+import Landing from "@/components/Landing.tsx";
 
 export default function Home() {
     return (
