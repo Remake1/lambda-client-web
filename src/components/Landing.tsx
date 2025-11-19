@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import LambdaLogo from "@/assets/lambda.svg";
+import { Link } from "react-router";
 
 export default function Landing() {
     return (
@@ -22,15 +23,17 @@ export default function Landing() {
                     </p>
 
                     <div className="flex flex-wrap items-center gap-3 pt-2">
-                        <Button size="lg" className="gap-2">
-                            Get started
+                        <Button size="lg" className="gap-2" asChild>
+                            <Link to="/auth/register">
+                                Get started
+                            </Link>
                         </Button>
-                        <button
-                            className="text-sm font-medium text-slate-300 hover:text-slate-100 underline-offset-4 hover:underline"
-                            type="button"
+                        <Link
+                            to="/auth/login"
+                            className="cursor-pointer text-sm font-medium text-slate-300 hover:text-slate-100 underline-offset-4 hover:underline"
                         >
                             Login to Dashboard
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="flex items-center gap-4 pt-4 text-xs text-slate-400">

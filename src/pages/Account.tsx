@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 import { useDispatch, useSelector } from "react-redux"
 import { logout, fetchUserProfile } from "@/store/authSlice"
 import { type AppDispatch, type RootState } from "@/store/store"
 import { useNavigate } from "react-router"
 import { useEffect } from "react"
+import { CopyableInput } from "@/components/CopyableInput"
 
 export default function Account() {
     const dispatch = useDispatch<AppDispatch>();
@@ -22,26 +24,27 @@ export default function Account() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
-            <Card className="w-[350px]">
+            <Card className="w-[400px]">
                 <CardHeader>
                     <CardTitle>Account</CardTitle>
                     <CardDescription>Your account information.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6">
                     {loading ? (
                         <p>Loading profile...</p>
                     ) : user ? (
-                        <div className="space-y-2">
-                            <div>
-                                <span className="font-semibold">Username:</span> {user.username}
+                        <div className="space-y-4">
+                            {user.id && (
+                                <CopyableInput label="User ID" value={user.id} />
+                            )}
+                            <div className="space-y-2">
+                                <Label>Username</Label>
+                                <div className="font-medium">{user.username}</div>
                             </div>
-                            <div>
-                                <span className="font-semibold">Email:</span> {user.email}
+                            <div className="space-y-2">
+                                <Label>Email</Label>
+                                <div className="font-medium">{user.email}</div>
                             </div>
-                            {/* UUID is not in the UserInfoResponse based on swagger, but if it was in the token or another endpoint we could show it. 
-                                The prompt asked for uuid, email and username. 
-                                The swagger /auth/me only returns email and username.
-                                I will display what is available. */}
                         </div>
                     ) : (
                         <p>Failed to load profile.</p>
