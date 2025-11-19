@@ -29,7 +29,7 @@ export default function NavbarFull() {
                         </NavLink>
 
                         <NavLink
-                            to="/about"
+                            to="/features"
                             className={({ isActive }) =>
                                 cn(
                                     "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline",
@@ -43,7 +43,7 @@ export default function NavbarFull() {
                         </NavLink>
 
                         <NavLink
-                            to="/about"
+                            to="/setup-guide"
                             className={({ isActive }) =>
                                 cn(
                                     "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline",
@@ -59,7 +59,7 @@ export default function NavbarFull() {
 
                     {/* Right side */}
                     <div className="flex items-center gap-3">
-                        <NavLink to="/login">
+                        <NavLink to="/auth/login">
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -68,7 +68,7 @@ export default function NavbarFull() {
                                 Sign in
                             </Button>
                         </NavLink>
-                        <NavLink to="/register">
+                        <NavLink to="/auth/register">
                             <Button
                                 size="sm"
                                 className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
