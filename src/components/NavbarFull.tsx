@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button.tsx";
 export default function NavbarFull() {
     return (
         <>
-            <header className="fixed top-0 left-0 right-0 z-10 bg-background mx-6">
+            <header className="fixed top-0 left-0 right-0 z-10 bg-background mx-8">
                 <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between gap-4">
                     {/*Left Side*/}
                     <div className="flex items-center gap-6">
