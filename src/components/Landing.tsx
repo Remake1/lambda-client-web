@@ -30,7 +30,7 @@ export default function Landing() {
                         </Button>
                         <Link
                             to="/auth/login"
-                            className="text-sm font-medium text-slate-300 hover:text-slate-100 underline-offset-4 hover:underline"
+                            className="cursor-pointer text-sm font-medium text-slate-300 hover:text-slate-100 underline-offset-4 hover:underline"
                         >
                             Login to Dashboard
                         </Link>
