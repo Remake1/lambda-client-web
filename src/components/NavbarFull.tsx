@@ -1,16 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { useSelector } from "react-redux";
-import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { Menu, X, User as UserIcon, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 import NavLink from "@/components/NavLink.tsx";
-import type { RootState } from "@/store/store";
+import type { RootState, AppDispatch } from "@/store/store";
+import { logout } from "@/store/authSlice";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 export default function NavbarFull() {
     const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/auth/login');
+        setIsUserMenuOpen(false);
+    };
 
     return (
         <header className="sticky top-0 left-0 right-0 z-50 bg-background border-b">
@@ -43,9 +58,38 @@ export default function NavbarFull() {
                 {/* Right Side - Desktop Actions */}
                 <div className="hidden md:flex items-center gap-3">
                     {isAuthenticated ? (
-                        <Link to="/account" className="text-sm font-medium hover:underline">
-                            {user?.username || "Account"}
-                        </Link>
+                        <Popover open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className="flex items-center gap-2 font-medium"
+                                >
+                                    <UserIcon size={18} />
+                                    {user?.username || "Account"}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-56 p-2" align="end">
+                                <div className="px-2 py-1.5 text-sm font-semibold">
+                                    {user?.username}
+                                </div>
+                                <div className="h-px bg-border my-1" />
+                                <Link to="/account" onClick={() => setIsUserMenuOpen(false)}>
+                                    <Button variant="ghost" size="sm" className="w-full justify-start font-normal">
+                                        <UserIcon className="mr-2 h-4 w-4" />
+                                        Account
+                                    </Button>
+                                </Link>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="w-full justify-start font-normal text-destructive hover:text-destructive hover:bg-destructive/10"
+                                    onClick={handleLogout}
+                                >
+                                    <LogOut className="mr-2 h-4 w-4" />
+                                    Logout
+                                </Button>
+                            </PopoverContent>
+                        </Popover>
                     ) : (
                         <>
                             <Link to="/auth/login">
@@ -87,6 +131,18 @@ export default function NavbarFull() {
                                 >
                                     {user?.username || "Account"}
                                 </Link>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+                                    onClick={() => {
+                                        handleLogout();
+                                        toggleMenu();
+                                    }}
+                                >
+                                    <LogOut className="mr-2 h-4 w-4" />
+                                    Logout
+                                </Button>
                             </>
                         ) : (
                             <>
