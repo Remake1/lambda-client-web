@@ -51,7 +51,7 @@ export default function Register() {
     }
 
     return (
-        <div className="flex items-center justify-center h-full bg-background py-30">
+        <div className="flex-1 flex items-center justify-center bg-background">
             <Card className="w-[350px]">
                 <CardHeader>
                     <CardTitle>Register</CardTitle>
@@ -80,7 +80,7 @@ export default function Register() {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="email@example.com" {...field} />
+                                            <Input placeholder="d.pavlo@lambda.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
