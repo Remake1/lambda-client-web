@@ -9,6 +9,7 @@ import Login from "@/pages/Login.tsx";
 import Register from "@/pages/Register.tsx";
 import Account from "@/pages/Account.tsx";
 import AuthGuard from "@/components/auth/AuthGuard.tsx";
+import GuestGuard from "@/components/auth/GuestGuard.tsx";
 
 const router = createBrowserRouter([
     {
@@ -21,8 +22,8 @@ const router = createBrowserRouter([
             {
                 path: "auth",
                 children: [
-                    { path: "login", Component: Login },
-                    { path: "register", Component: Register },
+                    { path: "login", element: <GuestGuard><Login /></GuestGuard> },
+                    { path: "register", element: <GuestGuard><Register /></GuestGuard> },
                 ],
             },
         ]

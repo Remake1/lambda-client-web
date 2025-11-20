@@ -23,7 +23,7 @@ export default function Account() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="flex items-center justify-center h-full bg-background py-12">
             <Card className="w-[400px]">
                 <CardHeader>
                     <CardTitle>Account</CardTitle>

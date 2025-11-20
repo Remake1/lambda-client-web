@@ -15,8 +15,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useDispatch, useSelector } from "react-redux"
 import { loginUser } from "@/store/authSlice"
 import { type AppDispatch, type RootState } from "@/store/store"
-import { useNavigate } from "react-router"
-import { useEffect } from "react"
 
 const formSchema = z.object({
     email: z.string().email({
@@ -29,8 +27,7 @@ const formSchema = z.object({
 
 export default function Login() {
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
-    const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const { loading, error } = useSelector((state: RootState) => state.auth);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -39,12 +36,6 @@ export default function Login() {
             password: "",
         },
     })
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/account');
-        }
-    }, [isAuthenticated, navigate]);
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         dispatch(loginUser(values));
