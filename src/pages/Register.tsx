@@ -51,7 +51,7 @@ export default function Register() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="flex items-center justify-center h-full bg-background py-30">
             <Card className="w-[350px]">
                 <CardHeader>
                     <CardTitle>Register</CardTitle>
