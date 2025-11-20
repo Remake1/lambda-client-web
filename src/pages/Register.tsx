@@ -80,7 +80,7 @@ export default function Register() {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="email@example.com" {...field} />
+                                            <Input placeholder="d.pavlo@lambda.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
