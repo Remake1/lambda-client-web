@@ -10,6 +10,7 @@ import Register from "@/pages/Register.tsx";
 import Account from "@/pages/Account.tsx";
 import AuthGuard from "@/components/auth/AuthGuard.tsx";
 import GuestGuard from "@/components/auth/GuestGuard.tsx";
+import NotFound from "@/pages/NotFound.tsx";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
                     { path: "register", element: <GuestGuard><Register /></GuestGuard> },
                 ],
             },
+            { path: "*", Component: NotFound },
         ]
     },
     {
