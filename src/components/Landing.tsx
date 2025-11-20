@@ -5,7 +5,7 @@ import { Link } from "react-router";
 export default function Landing() {
     return (
         <section className="relative w-full h-full">
-            <div className="relative mx-auto flex h-full max-w-6xl flex-col px-6 py-28 md:flex-row md:items-center md:gap-16 lg:px-8">
+            <div className="relative mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-6 md:flex-row md:gap-16 lg:px-8">
 
                 {/*<div className="absolute top-0 right-0 w-[50vw] h-[50vw] max-w-[800px] max-h-[800px] bg-blue-900/20 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/4"/>*/}
 

@@ -28,8 +28,8 @@ export default function NavbarFull() {
     };
 
     return (
-        <header className="sticky top-0 left-0 right-0 z-50 bg-background border-b">
-            <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 md:px-8">
+        <header className="sticky top-0 left-0 right-0 z-50 bg-background border-b h-[var(--header-height)]">
+            <div className="container mx-auto flex h-full max-w-screen-2xl items-center justify-between px-4 md:px-8">
                 {/* Left Side - Logo & Desktop Nav */}
                 <div className="flex items-center gap-6">
                     {/* Logo */}

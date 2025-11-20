@@ -42,7 +42,7 @@ export default function Login() {
     }
 
     return (
-        <div className="flex items-center justify-center h-full bg-background py-30">
+        <div className="flex-1 flex items-center justify-center bg-background">
             <Card className="w-[350px]">
                 <CardHeader>
                     <CardTitle>Login</CardTitle>
