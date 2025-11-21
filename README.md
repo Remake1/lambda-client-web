@@ -13,11 +13,22 @@ This is main client for helper device.
 
 ## Getting Started
 
+### Setup with Docker
+
+1. Build Image
+   ```bash
+   docker build -t lambda-client-web .
+   ```
+2. Run Container
+    ```bash
+    docker run -p 8888:8888 lambda-client-web
+    ```
+
+
 ### Requirements
 - [Node.js](https://nodejs.org/) v22 or higher
 - [pnpm](https://pnpm.io/) v10 or higher
 
-### Setup with Docker
 
 ### Run for development
 
@@ -31,7 +42,7 @@ This is main client for helper device.
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` and adjust `VITE_API_BASE_URL` to point to your backend API endpoint if different from the default.
+   Edit `.env` and adjust `VITE_API_BASE_URL` to point to backend API if different from the default.
 
 3. Start the development server:
    ```bash
