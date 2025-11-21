@@ -8,6 +8,7 @@ import SetupGuide from "@/pages/SetupGuide.tsx";
 import Login from "@/pages/Login.tsx";
 import Register from "@/pages/Register.tsx";
 import Account from "@/pages/Account.tsx";
+import Dashboard from "@/pages/Dashboard.tsx";
 import AuthGuard from "@/components/auth/AuthGuard.tsx";
 import GuestGuard from "@/components/auth/GuestGuard.tsx";
 import NotFound from "@/pages/NotFound.tsx";
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
             { path: "features", Component: Features },
             { path: "setup-guide", Component: SetupGuide },
             { path: "account", element: <AuthGuard><Account /></AuthGuard > },
+            { path: "dashboard", element: <AuthGuard><Dashboard /></AuthGuard> },
             {
                 path: "auth",
                 children: [
