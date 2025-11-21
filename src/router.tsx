@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router";
 import Home from "./pages/Home.tsx";
 import BaseLayout from "./layouts/BaseLayout.tsx";
 import Features from "./pages/Features.tsx";
-import InterviewLayout from "./layouts/InterviewLayout.tsx";
-import OASession from "./pages/OASession.tsx";
+import SessionLayout from "./layouts/SessionLayout.tsx";
+import Session from "./pages/Session.tsx";
 import SetupGuide from "@/pages/SetupGuide.tsx";
 import Login from "@/pages/Login.tsx";
 import Register from "@/pages/Register.tsx";
@@ -31,9 +31,9 @@ const router = createBrowserRouter([
         ]
     },
     {
-        Component: InterviewLayout,
+        Component: SessionLayout,
         children: [
-            { path: "oa", Component: OASession },
+            { path: "session", Component: Session },
         ]
     }
 ]);
