@@ -9,8 +9,8 @@ import Login from "@/pages/Login.tsx";
 import Register from "@/pages/Register.tsx";
 import Account from "@/pages/Account.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
-import AuthGuard from "@/components/auth/AuthGuard.tsx";
-import GuestGuard from "@/components/auth/GuestGuard.tsx";
+import AuthGuard from "@/components/guards/AuthGuard.tsx";
+import GuestGuard from "@/components/guards/GuestGuard.tsx";
 import NotFound from "@/pages/NotFound.tsx";
 
 const router = createBrowserRouter([

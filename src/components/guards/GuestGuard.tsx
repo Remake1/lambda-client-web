@@ -12,7 +12,7 @@ const GuestGuard = ({ children }: GuestGuardProps) => {
     const location = useLocation();
 
     if (isAuthenticated) {
-        return <Navigate to="/account" state={{ from: location }} replace />;
+        return <Navigate to="/dashboard" state={{ from: location }} replace />;
     }
 
     return <>{children}</>;
