@@ -1,8 +1,37 @@
-# React + TypeScript + Vite
+# Lambda Web Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is main client for helper device.
+
+### Libraries and Tools used:
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [React 19.2](https://react.dev/)
+- [Redux Toolkit](https://redux-toolkit.js.org/) for state management
+- [React Router v7 (data mode)](https://reactrouter.com/start/data/routing) for routing
+- [Shadcn UI](https://ui.shadcn.com/) for UI components
+- [Tailwind CSS](https://tailwindcss.com/) for styling
 
 ## Getting Started
+
+### Setup with Docker
+
+1. Build Image
+   ```bash
+   docker build -t lambda-client-web .
+   ```
+2. Run Container
+    ```bash
+    docker run -p 8888:8888 lambda-client-web
+    ```
+
+
+### Requirements
+- [Node.js](https://nodejs.org/) v22 or higher
+- [pnpm](https://pnpm.io/) v10 or higher
+
+
+### Run for development
+
 
 1. Install dependencies:
    ```bash
@@ -13,17 +42,24 @@ This template provides a minimal setup to get React working in Vite with HMR and
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` and adjust `VITE_API_BASE_URL` to point to your backend API endpoint if different from the default.
+   Edit `.env` and adjust `VITE_API_BASE_URL` to point to backend API if different from the default.
 
 3. Start the development server:
    ```bash
    pnpm dev
    ```
 
-Currently, two official plugins are available:
+### Build for production
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+2. Build the project:
+   ```bash
+   pnpm build
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
 
 ## React Compiler
 
