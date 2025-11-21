@@ -1,6 +1,6 @@
 import {Outlet} from "react-router";
 
-export default function InterviewLayout() {
+export default function SessionLayout() {
     return (
         <>
             Small header
