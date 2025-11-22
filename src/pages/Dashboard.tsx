@@ -44,7 +44,7 @@ export default function Dashboard() {
                                 <ItemContent>
                                     <ItemTitle>Downloads</ItemTitle>
                                     <ItemDescription>
-                                        Access available downloads.
+                                        Download client for your desktop.
                                     </ItemDescription>
                                 </ItemContent>
                                 <ItemActions>
