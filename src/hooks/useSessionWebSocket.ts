@@ -6,13 +6,12 @@ import {
     setHardwareStatus,
     addMessage,
     restoreSession,
-    type Message
 } from '@/store/sessionSlice';
-
 
 export function useSessionWebSocket() {
     const dispatch = useDispatch();
-    const { isConnected, language, questionStyle } = useSelector((state: RootState) => state.session);
+    const { isConnected, language, questionStyle, messages } = useSelector((state: RootState) => state.session);
+    const { accessToken } = useSelector((state: RootState) => state.auth);
     const socketRef = useRef<WebSocket | null>(null);
 
     // Restore session from localStorage on mount
@@ -28,26 +27,32 @@ export function useSessionWebSocket() {
         }
     }, [dispatch]);
 
-
-
     // Save session to localStorage on update
-    const sessionState = useSelector((state: RootState) => state.session);
     useEffect(() => {
-        if (sessionState.messages.length > 0 || sessionState.isConnected) {
+        // Only save if we have some state worth saving
+        if (messages.length > 0 || isConnected) {
+            const sessionState = {
+                isConnected, // Note: persisting isConnected=true might cause auto-reconnect loops if not handled carefully
+                language,
+                questionStyle,
+                messages,
+                hardwareStatus: 'waiting' // Always reset to waiting on reload? Or persist?
+            };
             localStorage.setItem('lambda_session', JSON.stringify(sessionState));
         }
-    }, [sessionState]);
+    }, [messages, isConnected, language, questionStyle]);
 
     const connect = useCallback(() => {
         if (socketRef.current?.readyState === WebSocket.OPEN) return;
 
-        const token = localStorage.getItem('access_token');
+        const token = accessToken || localStorage.getItem('access_token');
 
         if (!token) {
             console.error("No token found");
             return;
         }
 
+        // Use relative path or env var in real app, but sticking to localhost:3000 as seen in previous edits
         const ws = new WebSocket(`ws://localhost:3000/ws/client?token=${token}`);
 
         ws.onopen = () => {
@@ -68,7 +73,7 @@ export function useSessionWebSocket() {
                 } else if (message.type === 'image_analysis_result') {
                     dispatch(addMessage({
                         type: 'ai',
-                        content: message,
+                        content: message, // Pass full message object so UI can access payload.ai_result
                         timestamp: Date.now()
                     }));
                 }
@@ -88,14 +93,14 @@ export function useSessionWebSocket() {
         };
 
         socketRef.current = ws;
-    }, [dispatch]);
+    }, [dispatch, accessToken]);
 
-    // Auto-reconnect if session was connected
+    // Auto-reconnect if session was connected (and we have a token)
     useEffect(() => {
-        if (isConnected && !socketRef.current) {
+        if (isConnected && !socketRef.current && accessToken) {
             connect();
         }
-    }, [isConnected, connect]);
+    }, [isConnected, connect, accessToken]);
 
     const disconnect = useCallback(() => {
         if (socketRef.current) {
@@ -114,7 +119,7 @@ export function useSessionWebSocket() {
 
             dispatch(addMessage({
                 type: 'user',
-                content: message,
+                content: message, // Pass object so UI can access type and language
                 timestamp: Date.now()
             }));
         } else {
@@ -125,7 +130,6 @@ export function useSessionWebSocket() {
     // Cleanup on unmount
     useEffect(() => {
         return () => {
-            // We don't necessarily        const token = localStorage.getItem('access_token');eeded.
             if (socketRef.current) {
                 socketRef.current.close();
             }

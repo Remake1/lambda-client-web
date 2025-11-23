@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { useSelector } from "react-redux";
-import { type RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { type RootState, type AppDispatch } from "@/store/store";
+import { refreshSession } from "@/store/authSlice";
+import { useState } from "react";
 
 interface ConnectionManagerProps {
     onConnect: () => void;
@@ -8,6 +10,22 @@ interface ConnectionManagerProps {
 
 export default function ConnectionManager({ onConnect }: ConnectionManagerProps) {
     const isConnected = useSelector((state: RootState) => state.session.isConnected);
+
+    const dispatch = useDispatch<AppDispatch>();
+    const [isConnecting, setIsConnecting] = useState(false);
+
+    const handleConnect = async () => {
+        setIsConnecting(true);
+        try {
+            await dispatch(refreshSession()).unwrap();
+            onConnect();
+        } catch (error) {
+            console.error("Failed to refresh session:", error);
+            // Optionally show error toast
+        } finally {
+            setIsConnecting(false);
+        }
+    };
 
     return (
         <div className="flex items-center gap-4">
@@ -18,8 +36,8 @@ export default function ConnectionManager({ onConnect }: ConnectionManagerProps)
                 </span>
             </div>
             {!isConnected && (
-                <Button onClick={onConnect}>
-                    Connect to the session
+                <Button onClick={handleConnect} disabled={isConnecting}>
+                    {isConnecting ? 'Connecting...' : 'Connect to the session'}
                 </Button>
             )}
         </div>
