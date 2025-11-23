@@ -53,7 +53,8 @@ export function useSessionWebSocket() {
         }
 
         // Use relative path or env var in real app, but sticking to localhost:3000 as seen in previous edits
-        const ws = new WebSocket(`ws://localhost:3000/ws/client?token=${token}`);
+        const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:3000/ws';
+        const ws = new WebSocket(`${wsUrl}/client?token=${token}`);
 
         ws.onopen = () => {
             console.log('Connected to WebSocket');

@@ -68,6 +68,7 @@ export default function Dashboard() {
                                 <ItemActions>
                                     <Button onClick={() => {
                                         dispatch(clearSession());
+                                        localStorage.removeItem('lambda_session');
                                         navigate('/session');
                                     }}>
                                         <Play className="mr-2 h-4 w-4" />

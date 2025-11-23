@@ -42,7 +42,7 @@ This is main client for helper device.
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` and adjust `VITE_API_BASE_URL` to point to backend API if different from the default.
+   Edit `.env` and adjust `VITE_API_BASE_URL` and `VITE_WS_URL` to point to backend API if different from the default.
 
 3. Start the development server:
    ```bash
