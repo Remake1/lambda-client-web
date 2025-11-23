@@ -6,10 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
 import { fetchUserProfile } from "@/store/authSlice";
+import { clearSession } from "@/store/sessionSlice";
+import { useNavigate } from "react-router";
 import { Download, Play } from "lucide-react";
 
 export default function Dashboard() {
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const { user, loading } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
@@ -63,7 +66,10 @@ export default function Dashboard() {
                                     </ItemDescription>
                                 </ItemContent>
                                 <ItemActions>
-                                    <Button>
+                                    <Button onClick={() => {
+                                        dispatch(clearSession());
+                                        navigate('/session');
+                                    }}>
                                         <Play className="mr-2 h-4 w-4" />
                                         Start OA/Interview
                                     </Button>
