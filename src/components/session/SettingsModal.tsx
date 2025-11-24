@@ -27,7 +27,6 @@ export default function SettingsModal() {
                         <HardwareStatus />
                     </div>
                     <div className="flex flex-col gap-4">
-                        <h3 className="text-sm font-medium">Language</h3>
                         <LanguageSelector />
                     </div>
                 </div>

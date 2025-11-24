@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Camera, Code, Type, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown } from "lucide-react";
+import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "@/store/store";
 import { setQuestionStyle, increaseFontSize, decreaseFontSize } from "@/store/sessionSlice";
