@@ -6,9 +6,10 @@ import ReactMarkdown from "react-markdown";
 
 export default function ChatInterface() {
     const messages = useSelector((state: RootState) => state.session.messages);
+    const fontSize = useSelector((state: RootState) => state.session.fontSize);
 
     return (
-        <div className="flex flex-col gap-4 w-full max-w-3xl mx-auto mt-8">
+        <div className="flex flex-col gap-4 w-full max-w-3xl mx-auto mt-8" style={{ fontSize: `${fontSize}px` }}>
             {messages.map((msg, index) => (
                 <div
                     key={index}
@@ -22,11 +23,11 @@ export default function ChatInterface() {
                     </span>
 
                     {msg.type === 'user' ? (
-                        <div className="text-sm">
+                        <div>
                             Requested {msg.content.type} solution in {msg.content.language}
                         </div>
                     ) : (
-                        <div className="w-full overflow-hidden rounded-md text-sm">
+                        <div className="w-full overflow-hidden rounded-md">
                             <ReactMarkdown
                                 components={{
                                     code({ node, inline, className, children, ...props }: any) {

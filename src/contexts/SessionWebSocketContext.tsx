@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type RootState } from '@/store/store';
 import {
@@ -8,7 +8,15 @@ import {
     restoreSession,
 } from '@/store/sessionSlice';
 
-export function useSessionWebSocket() {
+interface SessionWebSocketContextType {
+    connect: () => void;
+    disconnect: () => void;
+    sendScreenshotRequest: () => void;
+}
+
+const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
+
+export function SessionWebSocketProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useDispatch();
     const { isConnected, language, questionStyle, messages } = useSelector((state: RootState) => state.session);
     const { accessToken } = useSelector((state: RootState) => state.auth);
@@ -29,21 +37,20 @@ export function useSessionWebSocket() {
 
     // Save session to localStorage on update
     useEffect(() => {
-        // Only save if we have some state worth saving
         if (messages.length > 0 || isConnected) {
             const sessionState = {
-                isConnected, // Note: persisting isConnected=true might cause auto-reconnect loops if not handled carefully
+                isConnected,
                 language,
                 questionStyle,
                 messages,
-                hardwareStatus: 'waiting' // Always reset to waiting on reload? Or persist?
+                hardwareStatus: 'waiting'
             };
             localStorage.setItem('lambda_session', JSON.stringify(sessionState));
         }
     }, [messages, isConnected, language, questionStyle]);
 
     const connect = useCallback(() => {
-        if (socketRef.current?.readyState === WebSocket.OPEN) return;
+        if (socketRef.current?.readyState === WebSocket.OPEN || socketRef.current?.readyState === WebSocket.CONNECTING) return;
 
         const token = accessToken || localStorage.getItem('access_token');
 
@@ -52,7 +59,6 @@ export function useSessionWebSocket() {
             return;
         }
 
-        // Use relative path or env var in real app, but sticking to localhost:3000 as seen in previous edits
         const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:3000/ws';
         const ws = new WebSocket(`${wsUrl}/client?token=${token}`);
 
@@ -74,7 +80,7 @@ export function useSessionWebSocket() {
                 } else if (message.type === 'image_analysis_result') {
                     dispatch(addMessage({
                         type: 'ai',
-                        content: message, // Pass full message object so UI can access payload.ai_result
+                        content: message,
                         timestamp: Date.now()
                     }));
                 }
@@ -120,7 +126,7 @@ export function useSessionWebSocket() {
 
             dispatch(addMessage({
                 type: 'user',
-                content: message, // Pass object so UI can access type and language
+                content: message,
                 timestamp: Date.now()
             }));
         } else {
@@ -137,9 +143,17 @@ export function useSessionWebSocket() {
         };
     }, []);
 
-    return {
-        connect,
-        disconnect,
-        sendScreenshotRequest
-    };
+    return (
+        <SessionWebSocketContext.Provider value={{ connect, disconnect, sendScreenshotRequest }}>
+            {children}
+        </SessionWebSocketContext.Provider>
+    );
+}
+
+export function useSessionWebSocket() {
+    const context = useContext(SessionWebSocketContext);
+    if (!context) {
+        throw new Error("useSessionWebSocket must be used within a SessionWebSocketProvider");
+    }
+    return context;
 }

@@ -12,6 +12,7 @@ interface SessionState {
     hardwareStatus: 'waiting' | 'connected';
     messages: Message[];
     questionStyle: 'leetcode' | 'other';
+    fontSize: number;
 }
 
 const initialState: SessionState = {
@@ -20,6 +21,7 @@ const initialState: SessionState = {
     hardwareStatus: 'waiting',
     messages: [],
     questionStyle: 'leetcode',
+    fontSize: 14,
 };
 
 const sessionSlice = createSlice({
@@ -47,6 +49,12 @@ const sessionSlice = createSlice({
         clearSession: () => {
             return initialState;
         },
+        increaseFontSize: (state) => {
+            state.fontSize = Math.min(state.fontSize + 2, 24);
+        },
+        decreaseFontSize: (state) => {
+            state.fontSize = Math.max(state.fontSize - 2, 12);
+        },
     },
 });
 
@@ -58,6 +66,8 @@ export const {
     setQuestionStyle,
     restoreSession,
     clearSession,
+    increaseFontSize,
+    decreaseFontSize,
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
