@@ -34,41 +34,45 @@ export const fetchClient = async (endpoint: string, options: FetchOptions = {}) 
 
     if (response.status === 401) {
         // Attempt refresh
-        const refreshToken = Cookies.get('refresh_token');
-        if (refreshToken) {
-            try {
-                const refreshResponse = await fetch(`${BASE_URL}/auth/refresh`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ refresh_token: refreshToken }),
-                });
-
-                if (refreshResponse.ok) {
-                    const data = await refreshResponse.json();
-                    const newAccessToken = data.access_token;
-                    localStorage.setItem('access_token', newAccessToken);
-
-                    // Retry original request with new token
-                    headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    response = await fetch(`${BASE_URL}${endpoint}`, {
-                        ...options,
-                        headers,
-                    });
-                } else {
-                    // Refresh failed
-                    handleLogout();
-                }
-            } catch (error) {
-                handleLogout();
-            }
+        const newAccessToken = await refreshAccessToken();
+        if (newAccessToken) {
+            // Retry original request with new token
+            headers['Authorization'] = `Bearer ${newAccessToken}`;
+            response = await fetch(`${BASE_URL}${endpoint}`, {
+                ...options,
+                headers,
+            });
         } else {
             handleLogout();
         }
     }
 
     return response;
+};
+
+export const refreshAccessToken = async (): Promise<string | null> => {
+    const refreshToken = Cookies.get('refresh_token');
+    if (!refreshToken) return null;
+
+    try {
+        const refreshResponse = await fetch(`${BASE_URL}/auth/refresh`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ refresh_token: refreshToken }),
+        });
+
+        if (refreshResponse.ok) {
+            const data = await refreshResponse.json();
+            const newAccessToken = data.access_token;
+            localStorage.setItem('access_token', newAccessToken);
+            return newAccessToken;
+        }
+    } catch (error) {
+        console.error('Token refresh failed:', error);
+    }
+    return null;
 };
 
 const handleLogout = () => {

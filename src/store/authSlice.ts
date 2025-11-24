@@ -108,6 +108,18 @@ export const fetchUserProfile = createAsyncThunk(
     }
 );
 
+export const refreshSession = createAsyncThunk(
+    'auth/refreshSession',
+    async (_, { rejectWithValue }) => {
+        const { refreshAccessToken } = await import('../lib/api');
+        const token = await refreshAccessToken();
+        if (!token) {
+            return rejectWithValue('Session refresh failed');
+        }
+        return token;
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -162,6 +174,17 @@ const authSlice = createSlice({
         builder.addCase(fetchUserProfile.rejected, (state) => {
             // api client handles 401 logout
             // clear user data if needed.
+            state.user = null;
+        });
+
+        // Refresh Session
+        builder.addCase(refreshSession.fulfilled, (state, action: PayloadAction<string>) => {
+            state.accessToken = action.payload;
+            state.isAuthenticated = true;
+        });
+        builder.addCase(refreshSession.rejected, (state) => {
+            state.accessToken = null;
+            state.isAuthenticated = false;
             state.user = null;
         });
     },
