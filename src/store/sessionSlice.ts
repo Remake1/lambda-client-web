@@ -1,27 +1,57 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { FONT_SIZE, DEFAULT_LANGUAGE } from '@/lib/constants';
+
+export const HardwareStatus = {
+    Waiting: 'waiting',
+    Connected: 'connected',
+} as const;
+
+export type HardwareStatus = typeof HardwareStatus[keyof typeof HardwareStatus];
+
+export const QuestionStyle = {
+    LeetCode: 'leetcode',
+    Other: 'other',
+} as const;
+
+export type QuestionStyle = typeof QuestionStyle[keyof typeof QuestionStyle];
+
+export interface AIContent {
+    type: 'image_analysis_result';
+    payload: {
+        ai_result: string;
+        message?: string;
+    };
+}
+
+export interface UserContent {
+    type: QuestionStyle;
+    language: string;
+}
+
+export type SessionMessageContent = AIContent | UserContent;
 
 export interface Message {
     type: 'user' | 'ai';
-    content: any;
+    content: SessionMessageContent;
     timestamp: number;
 }
 
 interface SessionState {
     language: string;
     isConnected: boolean;
-    hardwareStatus: 'waiting' | 'connected';
+    hardwareStatus: HardwareStatus;
     messages: Message[];
-    questionStyle: 'leetcode' | 'other';
+    questionStyle: QuestionStyle;
     fontSize: number;
 }
 
 const initialState: SessionState = {
-    language: 'C++',
+    language: DEFAULT_LANGUAGE,
     isConnected: false,
-    hardwareStatus: 'waiting',
+    hardwareStatus: HardwareStatus.Waiting,
     messages: [],
-    questionStyle: 'leetcode',
-    fontSize: 14,
+    questionStyle: QuestionStyle.LeetCode,
+    fontSize: FONT_SIZE.DEFAULT,
 };
 
 const sessionSlice = createSlice({
@@ -34,13 +64,13 @@ const sessionSlice = createSlice({
         setConnectionStatus: (state, action: PayloadAction<boolean>) => {
             state.isConnected = action.payload;
         },
-        setHardwareStatus: (state, action: PayloadAction<'waiting' | 'connected'>) => {
+        setHardwareStatus: (state, action: PayloadAction<HardwareStatus>) => {
             state.hardwareStatus = action.payload;
         },
         addMessage: (state, action: PayloadAction<Message>) => {
             state.messages.push(action.payload);
         },
-        setQuestionStyle: (state, action: PayloadAction<'leetcode' | 'other'>) => {
+        setQuestionStyle: (state, action: PayloadAction<QuestionStyle>) => {
             state.questionStyle = action.payload;
         },
         restoreSession: (state, action: PayloadAction<SessionState>) => {
@@ -50,10 +80,10 @@ const sessionSlice = createSlice({
             return initialState;
         },
         increaseFontSize: (state) => {
-            state.fontSize = Math.min(state.fontSize + 2, 24);
+            state.fontSize = Math.min(state.fontSize + FONT_SIZE.STEP, FONT_SIZE.MAX);
         },
         decreaseFontSize: (state) => {
-            state.fontSize = Math.max(state.fontSize - 2, 12);
+            state.fontSize = Math.max(state.fontSize - FONT_SIZE.STEP, FONT_SIZE.MIN);
         },
     },
 });

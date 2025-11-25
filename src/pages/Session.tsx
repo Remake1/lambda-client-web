@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { type RootState } from "@/store/store";
+import { useSessionStatus } from "@/hooks/useSessionStatus";
 import ChatInterface from "@/components/session/ChatInterface";
 import ConnectionManager from "@/components/session/ConnectionManager";
 import HardwareStatus from "@/components/session/HardwareStatus";
@@ -8,9 +7,7 @@ import { useSessionWebSocket } from "@/contexts/SessionWebSocketContext";
 
 export default function Session() {
     const { connect } = useSessionWebSocket();
-    const { isConnected, hardwareStatus } = useSelector((state: RootState) => state.session);
-
-    const isFullyConnected = isConnected && hardwareStatus === 'connected';
+    const { isFullyConnected } = useSessionStatus();
 
     if (isFullyConnected) {
         return (

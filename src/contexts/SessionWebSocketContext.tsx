@@ -6,6 +6,8 @@ import {
     setHardwareStatus,
     addMessage,
     restoreSession,
+    HardwareStatus,
+    type AIContent
 } from '@/store/sessionSlice';
 
 interface SessionWebSocketContextType {
@@ -43,7 +45,7 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
                 language,
                 questionStyle,
                 messages,
-                hardwareStatus: 'waiting'
+                hardwareStatus: HardwareStatus.Waiting
             };
             localStorage.setItem('lambda_session', JSON.stringify(sessionState));
         }
@@ -73,14 +75,18 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
 
                 if (message.type === 'system_status') {
                     if (message.payload?.message === 'hardware_not_connected') {
-                        dispatch(setHardwareStatus('waiting'));
+                        dispatch(setHardwareStatus(HardwareStatus.Waiting));
                     } else if (message.payload?.message === 'hardware_connected') {
-                        dispatch(setHardwareStatus('connected'));
+                        dispatch(setHardwareStatus(HardwareStatus.Connected));
                     }
                 } else if (message.type === 'image_analysis_result') {
+                    const aiContent: AIContent = {
+                        type: 'image_analysis_result',
+                        payload: message.payload
+                    };
                     dispatch(addMessage({
                         type: 'ai',
-                        content: message,
+                        content: aiContent,
                         timestamp: Date.now()
                     }));
                 }
@@ -126,7 +132,10 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
 
             dispatch(addMessage({
                 type: 'user',
-                content: message,
+                content: {
+                    type: questionStyle,
+                    language: language
+                },
                 timestamp: Date.now()
             }));
         } else {
