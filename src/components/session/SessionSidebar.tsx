@@ -1,19 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Camera, Code, Type, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown } from "lucide-react";
+import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "@/store/store";
-import { setQuestionStyle, increaseFontSize, decreaseFontSize } from "@/store/sessionSlice";
-import { useSessionWebSocket } from "@/contexts/SessionWebSocketContext";
+import { setQuestionStyle, increaseFontSize, decreaseFontSize, QuestionStyle } from "@/store/sessionSlice";
+import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import SettingsModal from "./SettingsModal";
 import { cn } from "@/lib/utils";
+import { useSessionStatus } from "@/hooks/useSessionStatus";
 
 export default function SessionSidebar() {
     const dispatch = useDispatch();
-    const { isConnected, hardwareStatus, questionStyle } = useSelector((state: RootState) => state.session);
+    const questionStyle = useSelector((state: RootState) => state.session.questionStyle);
+    const { isConnected, isFullyConnected } = useSessionStatus();
     const { sendScreenshotRequest, connect } = useSessionWebSocket();
-
-    const isFullyConnected = isConnected && hardwareStatus === 'connected';
 
     return (
         <TooltipProvider>
@@ -43,9 +43,9 @@ export default function SessionSidebar() {
                                 size="icon"
                                 className={cn(
                                     "h-7 w-7 md:h-9 md:w-9 rounded-lg border border-border",
-                                    questionStyle === 'leetcode' && "border-gray-500"
+                                    questionStyle === QuestionStyle.LeetCode && "border-gray-500"
                                 )}
-                                onClick={() => dispatch(setQuestionStyle('leetcode'))}
+                                onClick={() => dispatch(setQuestionStyle(QuestionStyle.LeetCode))}
                             >
                                 <CodeXml className="h-4 w-4 md:h-5 md:w-5" />
                             </Button>
@@ -60,9 +60,9 @@ export default function SessionSidebar() {
                                 size="icon"
                                 className={cn(
                                     "h-7 w-7 md:h-9 md:w-9 rounded-lg border border-border",
-                                    questionStyle === 'other' && "border-gray-500"
+                                    questionStyle === QuestionStyle.Other && "border-gray-500"
                                 )}
-                                onClick={() => dispatch(setQuestionStyle('other'))}
+                                onClick={() => dispatch(setQuestionStyle(QuestionStyle.Other))}
                             >
                                 <MessageCircleQuestionMark className="h-4 w-4 md:h-5 md:w-5" />
                             </Button>

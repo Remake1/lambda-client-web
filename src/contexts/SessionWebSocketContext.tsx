@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef, useCallback } from 'react';
+import React, { createContext, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type RootState } from '@/store/store';
 import {
@@ -6,6 +6,8 @@ import {
     setHardwareStatus,
     addMessage,
     restoreSession,
+    HardwareStatus,
+    type AIContent
 } from '@/store/sessionSlice';
 
 interface SessionWebSocketContextType {
@@ -14,7 +16,7 @@ interface SessionWebSocketContextType {
     sendScreenshotRequest: () => void;
 }
 
-const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
+export const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
 
 export function SessionWebSocketProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useDispatch();
@@ -43,7 +45,7 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
                 language,
                 questionStyle,
                 messages,
-                hardwareStatus: 'waiting'
+                hardwareStatus: HardwareStatus.Waiting
             };
             localStorage.setItem('lambda_session', JSON.stringify(sessionState));
         }
@@ -73,14 +75,18 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
 
                 if (message.type === 'system_status') {
                     if (message.payload?.message === 'hardware_not_connected') {
-                        dispatch(setHardwareStatus('waiting'));
+                        dispatch(setHardwareStatus(HardwareStatus.Waiting));
                     } else if (message.payload?.message === 'hardware_connected') {
-                        dispatch(setHardwareStatus('connected'));
+                        dispatch(setHardwareStatus(HardwareStatus.Connected));
                     }
                 } else if (message.type === 'image_analysis_result') {
+                    const aiContent: AIContent = {
+                        type: 'image_analysis_result',
+                        payload: message.payload
+                    };
                     dispatch(addMessage({
                         type: 'ai',
-                        content: message,
+                        content: aiContent,
                         timestamp: Date.now()
                     }));
                 }
@@ -126,7 +132,10 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
 
             dispatch(addMessage({
                 type: 'user',
-                content: message,
+                content: {
+                    type: questionStyle,
+                    language: language
+                },
                 timestamp: Date.now()
             }));
         } else {
@@ -148,12 +157,4 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
             {children}
         </SessionWebSocketContext.Provider>
     );
-}
-
-export function useSessionWebSocket() {
-    const context = useContext(SessionWebSocketContext);
-    if (!context) {
-        throw new Error("useSessionWebSocket must be used within a SessionWebSocketProvider");
-    }
-    return context;
 }
