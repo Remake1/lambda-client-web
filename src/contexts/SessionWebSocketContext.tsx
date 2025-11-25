@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef, useCallback } from 'react';
+import React, { createContext, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type RootState } from '@/store/store';
 import {
@@ -16,7 +16,7 @@ interface SessionWebSocketContextType {
     sendScreenshotRequest: () => void;
 }
 
-const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
+export const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
 
 export function SessionWebSocketProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useDispatch();
@@ -157,12 +157,4 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
             {children}
         </SessionWebSocketContext.Provider>
     );
-}
-
-export function useSessionWebSocket() {
-    const context = useContext(SessionWebSocketContext);
-    if (!context) {
-        throw new Error("useSessionWebSocket must be used within a SessionWebSocketProvider");
-    }
-    return context;
 }

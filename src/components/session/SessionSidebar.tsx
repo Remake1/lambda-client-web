@@ -4,7 +4,7 @@ import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrow
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "@/store/store";
 import { setQuestionStyle, increaseFontSize, decreaseFontSize, QuestionStyle } from "@/store/sessionSlice";
-import { useSessionWebSocket } from "@/contexts/SessionWebSocketContext";
+import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import SettingsModal from "./SettingsModal";
 import { cn } from "@/lib/utils";
 import { useSessionStatus } from "@/hooks/useSessionStatus";

@@ -3,7 +3,7 @@ import ChatInterface from "@/components/session/ChatInterface";
 import ConnectionManager from "@/components/session/ConnectionManager";
 import HardwareStatus from "@/components/session/HardwareStatus";
 import LanguageSelector from "@/components/session/LanguageSelector";
-import { useSessionWebSocket } from "@/contexts/SessionWebSocketContext";
+import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 
 export default function Session() {
     const { connect } = useSessionWebSocket();
