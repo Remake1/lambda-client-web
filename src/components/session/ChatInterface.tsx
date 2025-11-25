@@ -47,7 +47,6 @@ export default function ChatInterface() {
                                                             defaultValue="solution"
                                                             data={[{
                                                                 language: language,
-                                                                filename: `solution.${language === 'c++' ? 'cpp' : language === 'python' ? 'py' : 'txt'}`,
                                                                 code: String(children).replace(/\n$/, '')
                                                             }]}
                                                         >

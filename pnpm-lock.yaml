@@ -44,6 +44,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.10.1
         version: 2.10.1(react-redux@9.2.0(@types/react@19.2.6)(react@19.2.0)(redux@5.0.1))(react@19.2.0)
+      '@shikijs/transformers':
+        specifier: ^3.15.0
+        version: 3.15.0
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -1003,6 +1006,9 @@ packages:
 
   '@shikijs/themes@3.15.0':
     resolution: {integrity: sha512-8ow2zWb1IDvCKjYb0KiLNrK4offFdkfNVPXb1OZykpLCzRU6j+efkY+Y7VQjNlNFXonSw+4AOdGYtmqykDbRiQ==}
+
+  '@shikijs/transformers@3.15.0':
+    resolution: {integrity: sha512-Hmwip5ovvSkg+Kc41JTvSHHVfCYF+C8Cp1omb5AJj4Xvd+y9IXz2rKJwmFRGsuN0vpHxywcXJ1+Y4B9S7EG1/A==}
 
   '@shikijs/types@3.15.0':
     resolution: {integrity: sha512-BnP+y/EQnhihgHy4oIAN+6FFtmfTekwOLsQbRw9hOKwqgNy8Bdsjq8B05oAt/ZgvIWWFrshV71ytOrlPfYjIJw==}
@@ -3043,6 +3049,11 @@ snapshots:
 
   '@shikijs/themes@3.15.0':
     dependencies:
+      '@shikijs/types': 3.15.0
+
+  '@shikijs/transformers@3.15.0':
+    dependencies:
+      '@shikijs/core': 3.15.0
       '@shikijs/types': 3.15.0
 
   '@shikijs/types@3.15.0':

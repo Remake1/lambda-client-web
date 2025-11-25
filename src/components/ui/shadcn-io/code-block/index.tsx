@@ -252,7 +252,7 @@ const codeBlockClassName = cn(
 
 type CodeBlockData = {
   language: string;
-  filename: string;
+  filename?: string;
   code: string;
 };
 
@@ -587,7 +587,7 @@ export const CodeBlockContent = ({
     const loadHighlightedCode = async () => {
       try {
         const { codeToHtml } = await import('shiki');
-        
+
         const html = await codeToHtml(children, {
           lang: language,
           themes: {
