@@ -6,6 +6,10 @@ import { RouterProvider } from "react-router/dom";
 import { ThemeProvider } from "@/components/theme-provider.tsx";
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { injectStore } from './lib/api';
+
+// Inject store into API client to handle 401 logout dispatch
+injectStore(store);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
