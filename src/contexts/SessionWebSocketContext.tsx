@@ -16,7 +16,9 @@ interface SessionWebSocketContextType {
     sendScreenshotRequest: () => void;
 }
 
-export const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
+const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
+
+export { SessionWebSocketContext };
 
 export function SessionWebSocketProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useDispatch();

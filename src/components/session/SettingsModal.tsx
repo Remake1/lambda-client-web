@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Settings, LogOut, ArrowLeft } from "lucide-react";
 import LanguageSelector from "@/components/session/LanguageSelector";
 import ConnectionManager from "@/components/session/ConnectionManager";
-import HardwareStatus from "@/components/session/HardwareStatus";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import { useDispatch } from "react-redux";
 import { clearSession } from "@/store/sessionSlice";
@@ -67,7 +66,6 @@ export default function SettingsModal() {
                         <div className="flex flex-col gap-4">
                             <h3 className="text-sm font-medium">Connection</h3>
                             <ConnectionManager onConnect={connect} />
-                            <HardwareStatus />
                         </div>
 
                         <div className="h-px bg-border" />
