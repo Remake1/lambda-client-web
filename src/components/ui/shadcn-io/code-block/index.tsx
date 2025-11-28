@@ -586,9 +586,25 @@ export const CodeBlockContent = ({
 
     const loadHighlightedCode = async () => {
       try {
-        const { codeToHtml } = await import('shiki');
+        const { createHighlighterCore } = await import('shiki/core');
+        const { createOnigurumaEngine } = await import('shiki/engine/oniguruma');
 
-        const html = await codeToHtml(children, {
+        const highlighter = await createHighlighterCore({
+          themes: [
+            import('shiki/themes/vitesse-light.mjs'),
+            import('shiki/themes/vitesse-dark.mjs'),
+          ],
+          langs: [
+            import('shiki/langs/cpp.mjs'),
+            import('shiki/langs/c.mjs'),
+            import('shiki/langs/python.mjs'),
+            import('shiki/langs/javascript.mjs'),
+            import('shiki/langs/typescript.mjs'),
+          ],
+          engine: createOnigurumaEngine(import('shiki/wasm')),
+        });
+
+        const html = highlighter.codeToHtml(children, {
           lang: language,
           themes: {
             light: themes.light,

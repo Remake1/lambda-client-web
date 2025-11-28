@@ -15,9 +15,30 @@ export function CopyableInput({ label, value, className }: CopyableInputProps) {
 
     const copyToClipboard = () => {
         if (value) {
-            navigator.clipboard.writeText(value);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(value).then(() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+            } else {
+                // Fallback for insecure contexts
+                const textArea = document.createElement("textarea");
+                textArea.value = value;
+                textArea.style.position = "absolute";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                }
+                document.body.removeChild(textArea);
+            }
         }
     };
 

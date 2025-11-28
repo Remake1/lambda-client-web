@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { fetchClient } from '../lib/api';
+import { fetchClient, refreshAccessToken } from '../lib/api';
 import Cookies from 'js-cookie';
 
 interface User {
@@ -111,7 +111,6 @@ export const fetchUserProfile = createAsyncThunk(
 export const refreshSession = createAsyncThunk(
     'auth/refreshSession',
     async (_, { rejectWithValue }) => {
-        const { refreshAccessToken } = await import('../lib/api');
         const token = await refreshAccessToken();
         if (!token) {
             return rejectWithValue('Session refresh failed');
