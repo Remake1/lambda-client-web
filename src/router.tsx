@@ -10,6 +10,7 @@ import Dashboard from "@/pages/Dashboard.tsx";
 import AuthGuard from "@/components/guards/AuthGuard.tsx";
 import GuestGuard from "@/components/guards/GuestGuard.tsx";
 import NotFound from "@/pages/NotFound.tsx";
+import SetupGuide from "@/pages/SetupGuide.tsx";
 
 const router = createBrowserRouter([
     {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, Component: Home },
             // { path: "features", Component: Features },
-            // { path: "setup-guide", Component: SetupGuide },
+            { path: "setup-guide", Component: SetupGuide },
             { path: "account", element: <AuthGuard><Account /></AuthGuard > },
             { path: "dashboard", element: <AuthGuard><Dashboard /></AuthGuard> },
             {
