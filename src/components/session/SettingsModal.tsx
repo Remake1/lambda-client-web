@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Settings, LogOut, ArrowLeft } from "lucide-react";
 import LanguageSelector from "@/components/session/LanguageSelector";
+import ModelSelector from "@/components/session/ModelSelector";
 import ConnectionManager from "@/components/session/ConnectionManager";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import { useDispatch } from "react-redux";
@@ -72,6 +73,7 @@ export default function SettingsModal() {
 
                         <div className="flex flex-col gap-4">
                             <LanguageSelector />
+                            <ModelSelector />
                         </div>
 
                         <div className="h-px bg-border" />

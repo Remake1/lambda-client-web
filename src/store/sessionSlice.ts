@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { FONT_SIZE, DEFAULT_LANGUAGE } from '@/lib/constants';
+import { FONT_SIZE, DEFAULT_LANGUAGE, DEFAULT_MODEL } from '@/lib/constants';
 
 export const HardwareStatus = {
     Waiting: 'waiting',
@@ -38,6 +38,7 @@ export interface Message {
 
 interface SessionState {
     language: string;
+    model: string;
     isConnected: boolean;
     hardwareStatus: HardwareStatus;
     messages: Message[];
@@ -47,6 +48,7 @@ interface SessionState {
 
 const initialState: SessionState = {
     language: DEFAULT_LANGUAGE,
+    model: DEFAULT_MODEL,
     isConnected: false,
     hardwareStatus: HardwareStatus.Waiting,
     messages: [],
@@ -60,6 +62,9 @@ const sessionSlice = createSlice({
     reducers: {
         setLanguage: (state, action: PayloadAction<string>) => {
             state.language = action.payload;
+        },
+        setModel: (state, action: PayloadAction<string>) => {
+            state.model = action.payload;
         },
         setConnectionStatus: (state, action: PayloadAction<boolean>) => {
             state.isConnected = action.payload;
@@ -90,6 +95,7 @@ const sessionSlice = createSlice({
 
 export const {
     setLanguage,
+    setModel,
     setConnectionStatus,
     setHardwareStatus,
     addMessage,
