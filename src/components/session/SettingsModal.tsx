@@ -1,12 +1,14 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Settings, LogOut, ArrowLeft } from "lucide-react";
+import { Settings, LogOut, ArrowLeft, Download } from "lucide-react";
 import LanguageSelector from "@/components/session/LanguageSelector";
 import ModelSelector from "@/components/session/ModelSelector";
 import ConnectionManager from "@/components/session/ConnectionManager";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSession } from "@/store/sessionSlice";
+import { type RootState } from "@/store/store";
+import { exportToMarkdown } from "@/lib/exportUtils";
 import { useState } from "react";
 
 import { useNavigate } from "react-router";
@@ -14,6 +16,7 @@ import { useNavigate } from "react-router";
 export default function SettingsModal() {
     const { connect, disconnect } = useSessionWebSocket();
     const dispatch = useDispatch();
+    const messages = useSelector((state: RootState) => state.session.messages);
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [open, setOpen] = useState(false);
@@ -33,7 +36,7 @@ export default function SettingsModal() {
                     <Settings className="h-4 w-4 md:h-5 md:w-5" />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{showConfirmation ? 'End Session?' : 'Session Settings'}</DialogTitle>
                 </DialogHeader>
@@ -75,6 +78,18 @@ export default function SettingsModal() {
                             <LanguageSelector />
                             <ModelSelector />
                         </div>
+
+                        <div className="h-px bg-border" />
+
+                        <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => exportToMarkdown(messages)}
+                            disabled={messages.length === 0}
+                        >
+                            <Download className="mr-2 h-4 w-4" />
+                            Export Conversation
+                        </Button>
 
                         <div className="h-px bg-border" />
 
