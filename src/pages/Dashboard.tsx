@@ -51,7 +51,7 @@ export default function Dashboard() {
                                     </ItemDescription>
                                 </ItemContent>
                                 <ItemActions>
-                                    <Button variant="outline">
+                                    <Button onClick={() => {navigate('/downloads')}} variant="outline">
                                         <Download className="mr-2 h-4 w-4" />
                                         Downloads
                                     </Button>

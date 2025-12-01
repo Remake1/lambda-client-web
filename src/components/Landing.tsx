@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button"
 import LambdaLogo from "@/assets/lambda.svg";
 import { Link } from "react-router";
+import HrLogo from "@/assets/hr-logo.png";
+import HirevueLogo from "@/assets/hirevue-logo.png";
+import CodilityLogo from "@/assets/codility-logo.png";
+import CodesignalLogo from "@/assets/codesignal-logo.png";
 
 export default function Landing() {
     return (
@@ -19,7 +23,7 @@ export default function Landing() {
                     </h1>
 
                     <p className="max-w-xl text-balance text-sm text-slate-300 sm:text-base">
-                        GUI-less and shortcut-less AI assistant for Online Assessments. Minimises detection by providing input and output via helper device.
+                        Stealth, window-less and shortcut-less online assessment and interview helper. Solves leetcode and MCQ style question with AI. Provides remote control from helper device.
                     </p>
 
                     <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -47,6 +51,21 @@ export default function Landing() {
                     <div className="absolute inset-0 bg-blue-400/40 blur-[100px] rounded-full transform scale-75" />
 
                     <img src={LambdaLogo} alt="Lambda Logo" className="relative h-48 w-48 md:h-80 md:w-80" />
+                </div>
+            </div>
+
+            {/* Logos Section */}
+            <div className="py-12">
+                <div className="container mx-auto px-4 md:px-8">
+                    <p className="text-center text-sm font-semibold text-slate-400 mb-6">
+                        Supports major platforms
+                    </p>
+                    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 md:gap-x-12">
+                        <img src={HrLogo} alt="HackerRank Logo" className="h-9 object-contain" />
+                        <img src={HirevueLogo} alt="HireVue Logo" className="h-7 object-contain" />
+                        <img src={CodilityLogo} alt="Codility Logo" className="h-7 object-contain" />
+                        <img src={CodesignalLogo} alt="CodeSignal Logo" className="h-7 object-contain" />
+                    </div>
                 </div>
             </div>
         </section>
