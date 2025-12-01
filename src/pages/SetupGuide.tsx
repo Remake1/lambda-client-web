@@ -8,7 +8,7 @@ const setupGuideContent = `
 1. Open the desktop app on the computer you will be using for the interview.
 2. Go to [Dashboard](/dashboard) and copy your unique ID (UUID).
 3. Paste the UUID into the desktop app to connect.
-4. Keep the app running in the background after you've successfully connected.
+4. Keep the app running in the background after you've successfully connected. You can hide/unhide the app by pressing \`Cmd+Shift+H\`.
 
 ### Step 2: Set Up the Web Client
 1. On a helper device (phone, tablet, or another computer), open the web client.

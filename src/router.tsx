@@ -11,6 +11,7 @@ import AuthGuard from "@/components/guards/AuthGuard.tsx";
 import GuestGuard from "@/components/guards/GuestGuard.tsx";
 import NotFound from "@/pages/NotFound.tsx";
 import SetupGuide from "@/pages/SetupGuide.tsx";
+import Downloads from "@/pages/Downloads.tsx";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
             { path: "setup-guide", Component: SetupGuide },
             { path: "account", element: <AuthGuard><Account /></AuthGuard > },
             { path: "dashboard", element: <AuthGuard><Dashboard /></AuthGuard> },
+            { path: "downloads", element: <AuthGuard><Downloads /></AuthGuard> },
             {
                 path: "auth",
                 children: [
