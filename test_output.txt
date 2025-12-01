@@ -1,0 +1,69 @@
+
+> lambda-client-web@0.0.0 test /Users/rostyk/Documents/projects/lambda-org/lambda-client-web
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.14 [39m[90m/Users/rostyk/Documents/projects/lambda-org/lambda-client-web[39m
+
+[90mstderr[2m | src/components/session/ModelSelector.test.tsx[2m > [22m[2mModelSelector[2m > [22m[2mchanges model when a new one is selected
+[22m[39mAn error occurred in the <SelectContentImpl> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ [31m❯[39m src/components/session/ModelSelector.test.tsx [2m([22m[2m3 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 139[2mms[22m[39m
+     [32m✓[39m renders correctly with default model[32m 35[2mms[22m[39m
+[31m     [31m×[31m changes model when a new one is selected[39m[32m 98[2mms[22m[39m
+     [32m✓[39m verifies MSW is working[32m 5[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/components/session/ModelSelector.test.tsx[2m > [22mModelSelector[2m > [22mchanges model when a new one is selected
+[31m[1mAssertionError[22m: expected 'gemini-2.5-flash' to be 'gemini-2.5-pro' // Object.is equality[39m
+
+Expected: [32m"gemini-2.5-[7mpro[27m"[39m
+Received: [31m"gemini-2.5-[7mflash[27m"[39m
+
+[36m [2m❯[22m src/components/session/ModelSelector.test.tsx:[2m48:48[22m[39m
+    [90m 46| [39m
+    [90m 47| [39m        [90m// Check if the store is updated (or UI reflects change)[39m
+    [90m 48| [39m        expect(store.getState().session.model).toBe(AI_MODELS.GEMINI_2…
+    [90m   | [39m                                               [31m^[39m
+    [90m 49| [39m        [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Gemini 2.5 Pro'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m 50| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Unhandled Errors [49m[22m[31m⎯⎯⎯⎯⎯⎯[39m
+[31m[1m
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.[22m[39m
+
+[31m⎯⎯⎯⎯⎯[39m[1m[41m Uncaught Exception [49m[22m[31m⎯⎯⎯⎯⎯[39m
+[31m[1mTypeError[22m: candidate?.scrollIntoView is not a function[39m
+[90m [2m❯[22m node_modules/.pnpm/@radix-ui+react-select@2.2.6_@types+react-dom@19.2.3_@types+react@19.2.6__@types+react@_38dc681bb1f2bcfeb5249d8ca2bc01f5/node_modules/@radix-ui/react-select/dist/index.mjs:[2m321:22[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@radix-ui+react-select@2.2.6_@types+react-dom@19.2.3_@types+react@19.2.6__@types+react@_38dc681bb1f2bcfeb5249d8ca2bc01f5/node_modules/@radix-ui/react-select/dist/index.mjs:[2m331:13[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@radix-ui+react-select@2.2.6_@types+react-dom@19.2.3_@types+react@19.2.6__@types+react@_38dc681bb1f2bcfeb5249d8ca2bc01f5/node_modules/@radix-ui/react-select/dist/index.mjs:[2m336:9[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25989:20[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m commitHookEffectListMount node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m13249:29[22m[39m
+[90m [2m❯[22m commitHookPassiveMountEffects node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m13336:11[22m[39m
+[90m [2m❯[22m commitPassiveMountOnFiber node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m15484:13[22m[39m
+[90m [2m❯[22m recursivelyTraversePassiveMountEffects node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m15439:11[22m[39m
+[90m [2m❯[22m commitPassiveMountOnFiber node_modules/.pnpm/react-dom@19.2.0_react@19.2.0/node_modules/react-dom/cjs/react-dom-client.development.js:[2m15476:11[22m[39m
+
+[31mThis error originated in "[1msrc/components/session/ModelSelector.test.tsx[22m" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.[39m
+[31mThe latest test that might've caused the error is "[1mchanges model when a new one is selected[22m". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.[39m
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (3)[39m
+[2m     Errors [22m [1m[31m1 error[39m[22m
+[2m   Start at [22m 13:59:58
+[2m   Duration [22m 828ms[2m (transform 296ms, setup 186ms, import 253ms, tests 139ms, environment 184ms)[22m
+
+ ELIFECYCLE  Test failed. See above for more details.
