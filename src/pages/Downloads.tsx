@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle, ItemGroup, ItemSeparator } from "@/components/ui/item";
 import { Download, Apple, Grid2x2 } from "lucide-react";
 
-const macOsLink = "https://github.com/Remake1/lambda-client-desktop/releases/download/v1.0.0/Lambda-MacOS.dmg";
+const macOsLink = "https://github.com/Remake1/lambda-client-desktop/releases/download/v1.0.1/Lambda-MacOS.dmg";
+const windowsLink = "https://github.com/Remake1/lambda-client-desktop/releases/download/v1.0.1/Lambda-Windows.exe";
 
 export default function Downloads() {
     return (
@@ -44,15 +45,17 @@ export default function Downloads() {
                                     <div>
                                         <ItemTitle>Windows</ItemTitle>
                                         <ItemDescription>
-                                            Coming soon.
+                                            Requires Windows 10 or later.
                                         </ItemDescription>
                                     </div>
                                 </div>
                             </ItemContent>
                             <ItemActions>
-                                <Button variant="outline" disabled>
-                                    <Download className="mr-2 h-4 w-4" />
-                                    Download
+                                <Button asChild>
+                                    <a href={windowsLink}>
+                                        <Download className="mr-2 h-4 w-4" />
+                                        Download
+                                    </a>
                                 </Button>
                             </ItemActions>
                         </Item>
