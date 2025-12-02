@@ -30,7 +30,7 @@ export default function ChatInterface() {
 
                         {isUser && userContent ? (
                             <div>
-                                Requested {userContent.type} solution in {userContent.language}
+                                Requested {userContent.type} solution{userContent.type !== 'other' && ` in ${userContent.language}`}
                             </div>
                         ) : aiContent ? (
                             <div className="w-full overflow-hidden rounded-md">
