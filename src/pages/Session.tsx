@@ -4,10 +4,23 @@ import ConnectionManager from "@/components/session/ConnectionManager";
 import HardwareStatus from "@/components/session/HardwareStatus";
 import LanguageSelector from "@/components/session/LanguageSelector";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
+import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
+import { useEffect } from "react";
 
 export default function Session() {
+    const { requestWakeLock, releaseWakeLock } = useScreenWakeLock();
     const { connect } = useSessionWebSocket();
     const { isFullyConnected } = useSessionStatus();
+
+    useEffect(() => {
+        if (isFullyConnected) {
+            requestWakeLock();
+        }
+
+        return () => {
+            releaseWakeLock();
+        };
+    }, [isFullyConnected, requestWakeLock, releaseWakeLock]);
 
     if (isFullyConnected) {
         return (
