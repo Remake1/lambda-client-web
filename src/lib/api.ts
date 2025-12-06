@@ -86,3 +86,27 @@ const handleLogout = () => {
         window.location.href = '/auth/login';
     }
 };
+
+export interface AnalyzeRequest {
+    screenshot_ids: string[];
+    type: string;
+    language: string;
+    model: string;
+}
+
+export interface AnalyzeResponse {
+    result: string;
+}
+
+export async function analyzeScreenshots(params: AnalyzeRequest): Promise<AnalyzeResponse> {
+    const response = await fetchClient('/ai/analyze', {
+        method: 'POST',
+        body: JSON.stringify(params),
+    });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Analysis failed');
+    }
+    return response.json();
+}
+

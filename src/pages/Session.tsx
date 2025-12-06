@@ -3,6 +3,7 @@ import ChatInterface from "@/components/session/ChatInterface";
 import ConnectionManager from "@/components/session/ConnectionManager";
 import HardwareStatus from "@/components/session/HardwareStatus";
 import LanguageSelector from "@/components/session/LanguageSelector";
+import ScreenshotPreview from "@/components/session/ScreenshotPreview";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import { useScreenWakeLock } from "@/hooks/useScreenWakeLock";
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ export default function Session() {
         return (
             <div className="container mx-auto max-w-4xl h-full">
                 <ChatInterface />
+                <ScreenshotPreview />
             </div>
         );
     }

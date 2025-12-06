@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown } from "lucide-react";
+import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown, Send, Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "@/store/store";
-import { setQuestionStyle, increaseFontSize, decreaseFontSize, QuestionStyle } from "@/store/sessionSlice";
+import { setQuestionStyle, increaseFontSize, decreaseFontSize, QuestionStyle, MAX_SCREENSHOTS } from "@/store/sessionSlice";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import SettingsModal from "./SettingsModal";
 import { cn } from "@/lib/utils";
@@ -12,8 +12,13 @@ import { useSessionStatus } from "@/hooks/useSessionStatus";
 export default function SessionSidebar() {
     const dispatch = useDispatch();
     const questionStyle = useSelector((state: RootState) => state.session.questionStyle);
+    const screenshotPreviews = useSelector((state: RootState) => state.session.screenshotPreviews);
+    const isAnalyzing = useSelector((state: RootState) => state.session.isAnalyzing);
     const { isConnected, isFullyConnected } = useSessionStatus();
-    const { sendScreenshotRequest, connect } = useSessionWebSocket();
+    const { sendScreenshotRequest, connect, submitAnalysis } = useSessionWebSocket();
+
+    const hasScreenshots = screenshotPreviews.length > 0;
+    const canTakeMore = screenshotPreviews.length < MAX_SCREENSHOTS;
 
     return (
         <TooltipProvider>
@@ -26,12 +31,41 @@ export default function SessionSidebar() {
                             size="icon"
                             className="h-7 w-7 md:h-9 md:w-9 rounded-lg bg-white hover:bg-white/90 text-black shadow-sm border border-border"
                             onClick={sendScreenshotRequest}
-                            disabled={!isFullyConnected}
+                            disabled={!isFullyConnected || !canTakeMore || isAnalyzing}
                         >
                             <Camera className="h-4 w-4 md:h-5 md:w-5" />
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">Take Screenshot</TooltipContent>
+                    <TooltipContent side="right">
+                        {!canTakeMore ? "Max screenshots reached" : "Take Screenshot"}
+                    </TooltipContent>
+                </Tooltip>
+
+                {/* Submit Analysis */}
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className={cn(
+                                "h-7 w-7 md:h-9 md:w-9 rounded-lg shadow-sm",
+                                hasScreenshots && !isAnalyzing
+                                    ? "bg-emerald-500 hover:bg-emerald-600 text-white"
+                                    : "bg-muted text-muted-foreground"
+                            )}
+                            onClick={submitAnalysis}
+                            disabled={!hasScreenshots || isAnalyzing}
+                        >
+                            {isAnalyzing ? (
+                                <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
+                            ) : (
+                                <Send className="h-4 w-4 md:h-5 md:w-5" />
+                            )}
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                        {isAnalyzing ? "Analyzing..." : "Submit for Analysis"}
+                    </TooltipContent>
                 </Tooltip>
 
                 {/* Mode Switch */}
@@ -145,3 +179,4 @@ export default function SessionSidebar() {
         </TooltipProvider>
     );
 }
+

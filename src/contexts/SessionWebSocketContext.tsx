@@ -6,14 +6,19 @@ import {
     setHardwareStatus,
     addMessage,
     restoreSession,
+    addScreenshotPreview,
+    clearScreenshotPreviews,
+    setIsAnalyzing,
     HardwareStatus,
     type AIContent
 } from '@/store/sessionSlice';
+import { analyzeScreenshots } from '@/lib/api';
 
 interface SessionWebSocketContextType {
     connect: () => void;
     disconnect: () => void;
     sendScreenshotRequest: () => void;
+    submitAnalysis: () => Promise<void>;
 }
 
 const SessionWebSocketContext = createContext<SessionWebSocketContextType | null>(null);
@@ -22,7 +27,7 @@ export { SessionWebSocketContext };
 
 export function SessionWebSocketProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useDispatch();
-    const { isConnected, language, questionStyle, messages } = useSelector((state: RootState) => state.session);
+    const { isConnected, language, model, questionStyle, messages, screenshotPreviews } = useSelector((state: RootState) => state.session);
     const { accessToken } = useSelector((state: RootState) => state.auth);
     const socketRef = useRef<WebSocket | null>(null);
 
@@ -74,6 +79,7 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
         ws.onmessage = (event) => {
             try {
                 const message = JSON.parse(event.data);
+                console.log('WebSocket message received:', message);
 
                 if (message.type === 'system_status') {
                     if (message.payload?.message === 'hardware_not_connected') {
@@ -81,7 +87,14 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
                     } else if (message.payload?.message === 'hardware_connected') {
                         dispatch(setHardwareStatus(HardwareStatus.Connected));
                     }
+                } else if (message.type === 'screenshot_saved') {
+                    dispatch(addScreenshotPreview({
+                        id: message.payload.id,
+                        preview: message.payload.image,
+                        timestamp: Date.now()
+                    }));
                 } else if (message.type === 'image_analysis_result') {
+                    // Keep for backward compatibility
                     const aiContent: AIContent = {
                         type: 'image_analysis_result',
                         payload: message.payload
@@ -126,24 +139,73 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
 
     const sendScreenshotRequest = useCallback(() => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            const message = {
-                type: questionStyle,
-                language: language
-            };
-            socketRef.current.send(JSON.stringify(message));
-
-            dispatch(addMessage({
-                type: 'user',
-                content: {
-                    type: questionStyle,
-                    language: language
-                },
-                timestamp: Date.now()
-            }));
+            // Just request a screenshot, no analysis params needed
+            socketRef.current.send(JSON.stringify({ type: 'screenshot_request' }));
         } else {
             console.error("WebSocket not connected");
         }
-    }, [questionStyle, language, dispatch]);
+    }, []);
+
+    const submitAnalysis = useCallback(async () => {
+        if (screenshotPreviews.length === 0) {
+            console.error("No screenshots to analyze");
+            return;
+        }
+
+        const screenshotIds = screenshotPreviews.map(p => p.id);
+
+        dispatch(setIsAnalyzing(true));
+
+        // Add user message
+        dispatch(addMessage({
+            type: 'user',
+            content: {
+                type: questionStyle,
+                language: language,
+                screenshotCount: screenshotIds.length
+            },
+            timestamp: Date.now()
+        }));
+
+        try {
+            const response = await analyzeScreenshots({
+                screenshot_ids: screenshotIds,
+                type: questionStyle,
+                language: language,
+                model: model
+            });
+
+            // Add AI response
+            dispatch(addMessage({
+                type: 'ai',
+                content: {
+                    type: 'image_analysis_result',
+                    payload: {
+                        ai_result: response.result
+                    }
+                },
+                timestamp: Date.now()
+            }));
+
+            // Clear previews after successful analysis
+            dispatch(clearScreenshotPreviews());
+        } catch (error) {
+            console.error("Analysis failed:", error);
+            // Add error message
+            dispatch(addMessage({
+                type: 'ai',
+                content: {
+                    type: 'image_analysis_result',
+                    payload: {
+                        ai_result: `Error: ${error instanceof Error ? error.message : 'Analysis failed'}`
+                    }
+                },
+                timestamp: Date.now()
+            }));
+        } finally {
+            dispatch(setIsAnalyzing(false));
+        }
+    }, [screenshotPreviews, questionStyle, language, model, dispatch]);
 
     // Cleanup on unmount
     useEffect(() => {
@@ -155,8 +217,9 @@ export function SessionWebSocketProvider({ children }: { children: React.ReactNo
     }, []);
 
     return (
-        <SessionWebSocketContext.Provider value={{ connect, disconnect, sendScreenshotRequest }}>
+        <SessionWebSocketContext.Provider value={{ connect, disconnect, sendScreenshotRequest, submitAnalysis }}>
             {children}
         </SessionWebSocketContext.Provider>
     );
 }
+

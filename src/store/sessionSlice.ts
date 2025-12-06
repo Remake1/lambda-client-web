@@ -26,6 +26,7 @@ export interface AIContent {
 export interface UserContent {
     type: QuestionStyle;
     language: string;
+    screenshotCount?: number;
 }
 
 export type SessionMessageContent = AIContent | UserContent;
@@ -36,6 +37,14 @@ export interface Message {
     timestamp: number;
 }
 
+export interface ScreenshotPreview {
+    id: string;
+    preview: string;
+    timestamp: number;
+}
+
+export const MAX_SCREENSHOTS = 5;
+
 interface SessionState {
     language: string;
     model: string;
@@ -44,6 +53,8 @@ interface SessionState {
     messages: Message[];
     questionStyle: QuestionStyle;
     fontSize: number;
+    screenshotPreviews: ScreenshotPreview[];
+    isAnalyzing: boolean;
 }
 
 const initialState: SessionState = {
@@ -54,6 +65,8 @@ const initialState: SessionState = {
     messages: [],
     questionStyle: QuestionStyle.LeetCode,
     fontSize: FONT_SIZE.DEFAULT,
+    screenshotPreviews: [],
+    isAnalyzing: false,
 };
 
 const sessionSlice = createSlice({
@@ -90,6 +103,22 @@ const sessionSlice = createSlice({
         decreaseFontSize: (state) => {
             state.fontSize = Math.max(state.fontSize - FONT_SIZE.STEP, FONT_SIZE.MIN);
         },
+        addScreenshotPreview: (state, action: PayloadAction<ScreenshotPreview>) => {
+            if (state.screenshotPreviews.length < MAX_SCREENSHOTS) {
+                state.screenshotPreviews.push(action.payload);
+            }
+        },
+        removeScreenshotPreview: (state, action: PayloadAction<string>) => {
+            state.screenshotPreviews = state.screenshotPreviews.filter(
+                (preview) => preview.id !== action.payload
+            );
+        },
+        clearScreenshotPreviews: (state) => {
+            state.screenshotPreviews = [];
+        },
+        setIsAnalyzing: (state, action: PayloadAction<boolean>) => {
+            state.isAnalyzing = action.payload;
+        },
     },
 });
 
@@ -104,6 +133,11 @@ export const {
     clearSession,
     increaseFontSize,
     decreaseFontSize,
+    addScreenshotPreview,
+    removeScreenshotPreview,
+    clearScreenshotPreviews,
+    setIsAnalyzing,
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
+

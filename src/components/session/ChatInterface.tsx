@@ -30,7 +30,11 @@ export default function ChatInterface() {
 
                         {isUser && userContent ? (
                             <div>
-                                Requested {userContent.type} solution{userContent.type !== 'other' && ` in ${userContent.language}`}
+                                Requested {userContent.type} solution
+                                {userContent.type !== 'other' && ` in ${userContent.language}`}
+                                {userContent.screenshotCount && userContent.screenshotCount > 0 && (
+                                    <span className="text-muted-foreground"> ({userContent.screenshotCount} screenshot{userContent.screenshotCount > 1 ? 's' : ''})</span>
+                                )}
                             </div>
                         ) : aiContent ? (
                             <div className="w-full overflow-hidden rounded-md">
