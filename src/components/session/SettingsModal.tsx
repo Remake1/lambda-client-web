@@ -1,14 +1,15 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Settings, LogOut, ArrowLeft, Download } from "lucide-react";
+import { Settings, LogOut, ArrowLeft, Download, Minus, Plus } from "lucide-react";
 import LanguageSelector from "@/components/session/LanguageSelector";
 import ModelSelector from "@/components/session/ModelSelector";
 import ConnectionManager from "@/components/session/ConnectionManager";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSession } from "@/store/sessionSlice";
+import { clearSession, increaseFontSize, decreaseFontSize } from "@/store/sessionSlice";
 import { type RootState } from "@/store/store";
 import { exportToMarkdown } from "@/lib/exportUtils";
+import { FONT_SIZE } from "@/lib/constants";
 import { useState } from "react";
 
 import { useNavigate } from "react-router";
@@ -17,6 +18,7 @@ export default function SettingsModal() {
     const { connect, disconnect } = useSessionWebSocket();
     const dispatch = useDispatch();
     const messages = useSelector((state: RootState) => state.session.messages);
+    const fontSize = useSelector((state: RootState) => state.session.fontSize);
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [open, setOpen] = useState(false);
@@ -77,6 +79,35 @@ export default function SettingsModal() {
                         <div className="flex flex-col gap-4">
                             <LanguageSelector />
                             <ModelSelector />
+                        </div>
+
+                        <div className="h-px bg-border" />
+
+                        <div className="flex flex-col gap-4">
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-medium">Font Size</label>
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                        onClick={() => dispatch(decreaseFontSize())}
+                                        disabled={fontSize <= FONT_SIZE.MIN}
+                                    >
+                                        <Minus className="h-4 w-4" />
+                                    </Button>
+                                    <span className="w-8 text-center text-sm font-medium">{fontSize}</span>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                        onClick={() => dispatch(increaseFontSize())}
+                                        disabled={fontSize >= FONT_SIZE.MAX}
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="h-px bg-border" />

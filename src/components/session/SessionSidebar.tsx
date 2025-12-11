@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, AArrowUp, AArrowDown, Send, Loader2 } from "lucide-react";
+import { Camera, RefreshCw, MessageCircleQuestionMark, CodeXml, Send, Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "@/store/store";
-import { setQuestionStyle, increaseFontSize, decreaseFontSize, QuestionStyle, MAX_SCREENSHOTS } from "@/store/sessionSlice";
+import { setQuestionStyle, QuestionStyle, MAX_SCREENSHOTS } from "@/store/sessionSlice";
 import { useSessionWebSocket } from "@/hooks/useSessionWebSocket";
 import SettingsModal from "./SettingsModal";
 import { cn } from "@/lib/utils";
@@ -102,39 +102,6 @@ export default function SessionSidebar() {
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="right">Other Mode</TooltipContent>
-                    </Tooltip>
-                </div>
-
-                <div className="h-px bg-border w-full my-0.5" />
-
-                {/* Font Size */}
-                <div className="flex flex-col gap-1 md:gap-2">
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-7 w-7 md:h-9 md:w-9 rounded-lg border border-border"
-                                onClick={() => dispatch(increaseFontSize())}
-                            >
-                                <AArrowUp className="h-5 w-5 md:h-6 md:w-6" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">Increase Font Size</TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-7 w-7 md:h-9 md:w-9 rounded-lg border border-border"
-                                onClick={() => dispatch(decreaseFontSize())}
-                            >
-                                <AArrowDown className="h-5 w-5 md:h-6 md:w-6" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">Decrease Font Size</TooltipContent>
                     </Tooltip>
                 </div>
 

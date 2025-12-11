@@ -603,6 +603,10 @@ export const CodeBlockContent = ({
             import('shiki/langs/jsx.mjs'),
             import('shiki/langs/tsx.mjs'),
             import('shiki/langs/vue.mjs'),
+            import('shiki/langs/css.mjs'),
+            import('shiki/langs/html.mjs'),
+            import('shiki/langs/json.mjs'),
+            import('shiki/langs/sql.mjs'),
           ],
           engine: createOnigurumaEngine(import('shiki/wasm')),
         });
